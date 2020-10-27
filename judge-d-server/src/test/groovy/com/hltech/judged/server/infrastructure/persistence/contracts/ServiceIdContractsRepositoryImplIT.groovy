@@ -27,25 +27,6 @@ class ServiceIdContractsRepositoryImplIT extends Specification {
     @Autowired
     private ServiceContractsRepository repository
 
-    def 'should find what was saved'() {
-        given:
-            def serviceContracts = new ServiceContracts(
-                new ServiceId('provider', '1.0'),
-                [new Capability('ping', new Contract('654321', MediaType.APPLICATION_JSON_VALUE))],
-                [new Expectation('some-other-provider', 'ping', new Contract("098765", MediaType.APPLICATION_JSON_VALUE))]
-            )
-            repository.persist(serviceContracts)
-        when:
-            def retrieved = repository.findOne(new ServiceId(serviceContracts.name, serviceContracts.version))
-        then:
-            retrieved.get().id.name == 'provider'
-            retrieved.get().id.version == '1.0'
-            retrieved.isPresent()
-            with(retrieved.get()) {
-                getMappedCapabilities("ping", identity()).get() == "654321"
-                getMappedExpectations('some-other-provider', "ping", identity()).get() == "098765"
-            }
-    }
 
     def 'should find all persisted service names'() {
         given:

@@ -18,7 +18,6 @@ jobs:
         - mvn validate docker:build@build-docker -P docker-app -f ./judge-d-server/pom.xml
         - mvn validate docker:build@build-docker -P docker-app -f ./judge-d-agent/pom.xml
     - stage: build & publish docker image for server
-      if: branch = master AND NOT type IN (pull_request)
       script:
         - mvn validate docker:build@build-docker -P docker-app -f ./judge-d-server/pom.xml
         - echo "Pushing to docker registry"
